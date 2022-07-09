@@ -1,0 +1,10 @@
+/sbt
+target
+/.bsp/
+/.idea
+.bloop/
+/.metals/
+metals.sbt
+/.vscode/
+/sbt.bat
+/sbt-launch.jar
