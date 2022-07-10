@@ -3,9 +3,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@{conf.ce.injection.samples.project.name}</title>
+    @import conf.ce.injection.samples.project
+    <title>@{project.name}</title>
+    <style type="text/css">
+        p { text-align: center; }
+        table { margin: 0 auto; }
+        table tr th, table tr td { padding: 5px; }
+    </style>
 </head>
 <body>
-文档内容......
+<p>Cats Info</p>
+
+<table cellspacing="0" border="1" style="border-collapse:collapse;">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>age</th>
+    </tr>
+    @for(cat <- models) {
+    <tr>
+        <td>@{cat.id}</td>
+        <td>@{cat.name}</td>
+        <td>@{cat.age}</td>
+    </tr>
+    }
+</table>
 </body>
 </html>

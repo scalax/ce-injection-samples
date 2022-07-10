@@ -61,12 +61,3 @@ class InitDB(xa: Transactor[IO], initData: InitData) {
 }
 
 class InitDBImpl(implicit xaProvide: Id[Transactor[IO]], initData: Id[InitData]) extends InitDB(implicitly, implicitly)
-
-class InitData {
-
-  val initCat: Seq[Cat] =
-    List(Cat(id = -1, name = "Marry", age = 2), Cat(id = -1, name = "Peter", age = 2), Cat(id = -1, name = "Lucy", age = 4))
-
-}
-
-class InitDataImpl extends InitData
