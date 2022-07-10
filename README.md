@@ -7,9 +7,10 @@ In Scala3 we use for comprehensions embbed by given. And also we will use cats-e
 
 Now try the [first version](./modules/scala213) (Scala2) with
 ```scala
-sbt>scala213/reStart
+sbt>run21
 ```
-and open
+and visit
 ```
 http://127.0.0.1:8080/list
 ```
+The stop command is `sbt>sotp21`
