@@ -18,11 +18,10 @@ class AppRoutes(listPetsServices: ListPetsServices, conf: Conf) {
 
   def listCatsRoutes = HttpRoutes.of[IO] { case GET -> Root / "list" =>
     val action = for {
-      cats <- listPetsServices.listCats
-      bb = println(cats)
+      cats   <- listPetsServices.listCats
       result <- Ok(ListPets(cats)(conf))
     } yield result
-    action.onError(e => IO(e.printStackTrace()))
+    action
   }
 
   val routes: HttpRoutes[IO] = listCatsRoutes

@@ -8,3 +8,4 @@ metals.sbt
 /.vscode/
 /sbt.bat
 /sbt-launch.jar
+/modules/scala213/h2database.mv.db

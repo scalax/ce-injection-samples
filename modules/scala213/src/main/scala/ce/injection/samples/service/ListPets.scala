@@ -15,13 +15,9 @@ class ListPetsServices(xa: Transactor[IO]) {
   val y = xa.yolo
   import y._
 
-  def listCats: IO[Seq[Cat]] = {
-    println("11" * 100)
-    val action = sql"""
+  def listCats: IO[Seq[Cat]] = sql"""
     select id, name, age from cat
   """.query[Cat].to[List].transact(xa)
-    action.onError(e => IO(e.printStackTrace()))
-  }
 
 }
 

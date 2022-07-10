@@ -56,10 +56,7 @@ class InitDB(xa: Transactor[IO], initData: InitData) {
 
   private val initDataAction = initData.initCat.map(insertCat).sequence.transact(xa)
 
-  val execInitDataAction: IO[Seq[Int]] = initDatabase *> initDataAction <* {
-    IO(println("22" * 100))
-
-  }
+  val execInitDataAction: IO[Seq[Int]] = initDatabase *> initDataAction
 
 }
 

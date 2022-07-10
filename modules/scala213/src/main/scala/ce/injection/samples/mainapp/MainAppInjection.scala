@@ -15,22 +15,20 @@ object MainAppInjection extends ZEnvHelper {
 
   type Module1Sum = Transactor[IO] with Conf with InitData
 
-  val Module1Resources: Resource[IO, ZEnvironment[Module1Sum]] = {
+  val Module1Resources: Resource[IO, ZEnvironment[Module1Sum]] = async[Resource[IO, *]] {
     val _dbResourcesProvide: DBResourcesProvide = new DBResourcesProvideImpl
-    _dbResourcesProvide.transactor.flatMap { implicit _dbResources =>
-      val _projectConf: ProjectConf = new ProjectConfImpl
-      Resource.eval(_projectConf.configIO).flatMap { implicit _conf =>
-        implicit val _initData: InitData = new InitDataImpl
-        val _initDBImpl: InitDB          = new InitDBImpl
-        Resource.eval(_initDBImpl.execInitDataAction).map { _ =>
-          val env = ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
-          env
-        }
-      }
-    }
+    implicit val _dbResources                   = _dbResourcesProvide.transactor.await
+    val _projectConf: ProjectConf               = new ProjectConfImpl
+    implicit val _conf                          = Resource.eval(_projectConf.configIO).await
+    implicit val _initData: InitData            = new InitDataImpl
+    val _initDBImpl: InitDB                     = new InitDBImpl
+    Resource.eval(_initDBImpl.execInitDataAction).await
+    val env = ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
+    env
   }
 
-  val AppModule: Resource[IO, AppRoutes] = Module1Resources.map { implicit env =>
+  val AppModule: Resource[IO, AppRoutes] = async[Resource[IO, *]] {
+    implicit val env: ZEnvironment[Module1Sum]       = Module1Resources.await
     implicit val _listPetsServices: ListPetsServices = new ListPetsServicesImpl
     new AppRoutesImpl
   }
