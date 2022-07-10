@@ -1,7 +1,7 @@
 # ce-injection-samples
 This project try to show a new injection way in Scala2 and Scala3.
 
-In Scala2 we use cats-effect-cps. There is a play use cats and macwire.
+In Scala2 we use cats-effect-cps. There is a plan use cats and macwire.
 
 In Scala3 we use for comprehensions embbed by given. And also we will use cats-effect-cps in Scala3.2.
 
