@@ -1,26 +1,16 @@
-# shino
+# ce-injection-samples
+This project try to show a new injection way in Scala2 and Scala3.
 
-An auto mapper for scala [slick](https://github.com/slick/slick) base on [asuna](https://github.com/scalax/asuna). Type safe, type driven, no runtime reflection.
+In Scala2 we use cats-effect-cps. There is a play use cats and macwire.
 
-How to get it
--------------
+In Scala3 we use for comprehensions embbed by given. And also we will use cats-effect-cps in Scala3.2.
 
-Add dependency
-
+Now try the [first version](./modules/scala213) (Scala2) with
 ```scala
-resolvers += Resolver.bintrayRepo("djx314", "maven")
-libraryDependencies += "net.scalax" %% "shino" % "0.0.2-SNAP20181008.1"
+sbt>scala213/reStart
+```
+and open
+```
+http://127.0.0.1:8080/list
 ```
 
-Can I use it in production?
--------------
-Nope. Since the mapping rules in asuna is not stable.
-
-Documentation
--------------
-
-[slick formatter](./README_formatter.md)  
-[slick reader](./README_reader.md)  
-[slick writer](./README_writer.md)  
-[slick sortBy](./README_sortby.md)  
-[slick dynamic](./README_dynamic.md)  
