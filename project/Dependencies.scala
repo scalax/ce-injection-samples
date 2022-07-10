@@ -43,6 +43,8 @@ object Dependencies {
     val zioInteropCats        = "3.3.0"
     val catsCPS               = "0.3.0"
     val h2                    = "2.1.214"
+    val domainsCats = "2.0.0"
+    val compilerpluginsBangnotation = "1.5.5"
   }
 
   val simpleLogger = List("org.slf4j" % "slf4j-simple" % versions.slf4j)
@@ -102,5 +104,9 @@ object Dependencies {
     "com.softwaremill.macwire" %% "util"   % versions.macwire,
     "com.softwaremill.macwire" %% "proxy"  % versions.macwire
   )
+
+  val domainsCats = List("com.thoughtworks.dsl" %% "domains-cats" % versions.domainsCats)
+
+  val compilerpluginsBangnotation = "com.thoughtworks.dsl" %% "compilerplugins-bangnotation" % versions.compilerpluginsBangnotation
 
 }

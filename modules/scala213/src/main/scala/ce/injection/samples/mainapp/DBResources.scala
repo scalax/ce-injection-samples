@@ -11,7 +11,6 @@ import cats.data._
 import cats.effect._
 import cats.implicits._
 import doobie.hikari.HikariTransactor
-import cats.effect.cps._
 import scala.concurrent.ExecutionContext
 
 class DBResourcesProvide {
