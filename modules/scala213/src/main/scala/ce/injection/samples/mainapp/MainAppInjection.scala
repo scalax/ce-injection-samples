@@ -22,7 +22,7 @@ object MainAppInjection extends ZEnvHelper {
       Resource.eval(_projectConf.configIO).flatMap { implicit _conf =>
         implicit val _initData: InitData = new InitDataImpl
         val _initDBImpl: InitDB          = new InitDBImpl
-        Resource.eval(_initDBImpl.execInitDataAction.onError(e => IO(e.printStackTrace()))).map { _ =>
+        Resource.eval(_initDBImpl.execInitDataAction).map { _ =>
           val env = ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
           env
         }
