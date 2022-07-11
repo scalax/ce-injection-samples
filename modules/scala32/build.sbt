@@ -1,4 +1,13 @@
-addSbtPlugin("org.scalameta"         % "sbt-scalafmt" % "2.4.6")
-addSbtPlugin("io.spray"              % "sbt-revolver" % "0.9.1")
-addSbtPlugin("io.github.davidmweber" % "flyway-sbt"   % "7.4.0")
-addSbtPlugin("com.typesafe.sbt"      % "sbt-twirl"    % "1.5.1")
+CustomSettings.scala2Settings
+
+libraryDependencies ++= Dependencies.http4s
+libraryDependencies ++= Dependencies.cats
+libraryDependencies ++= Dependencies.doobie
+libraryDependencies ++= Dependencies.h2
+libraryDependencies ++= Dependencies.zio2
+libraryDependencies ++= Dependencies.simpleLogger
+libraryDependencies ++= Dependencies.domainsCats
+
+addCompilerPlugin(Dependencies.kindProjector)
+
+enablePlugins(SbtTwirl)

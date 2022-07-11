@@ -9,3 +9,4 @@ metals.sbt
 /sbt.bat
 /sbt-launch.jar
 /modules/scala213/h2database.mv.db
+/modules/scala31/h2database.mv.db

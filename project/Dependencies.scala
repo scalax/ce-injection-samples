@@ -33,7 +33,7 @@ object Dependencies {
     val scalaJava8Compat      = "1.0.2"
     val circeYaml             = "0.2.1"
     val hikariCP              = "5.0.1"
-    val zioConfig             = "3.0.0-RC9"
+    val zioConfig             = "3.0.1"
     val zioJson               = "0.3.0-RC8"
     val jsoniter              = "2.13.31"
     val tethys                = "0.26.0"
@@ -63,8 +63,8 @@ object Dependencies {
     "org.http4s" %% "http4s-dsl"          % versions.http4s,
     "org.http4s" %% "http4s-ember-server" % versions.http4s,
     "org.http4s" %% "http4s-ember-client" % versions.http4s,
-    "org.http4s" %% "http4s-circe"        % versions.http4s,
-    "org.http4s" %% "http4s-twirl"        % "0.23.11"
+    "org.http4s" %% "http4s-circe"        % versions.http4s/*,
+    "org.http4s" %% "http4s-twirl"        % "0.23.11" exclude ("org.http4s", "http4s-core_2.13") exclude ("com.typesafe.play", "twirl-api_2.13") exclude ("org.typelevel", "*") cross CrossVersion.for3Use2_13*/
   )
 
   val cats = List("org.typelevel" %% "cats-effect" % versions.catsEffect)
