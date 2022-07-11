@@ -16,3 +16,5 @@ and visit
 http://127.0.0.1:8080/list
 ```
 The stop command is `sbt>sotp21`
+
+[Link to the main file](./modules/scala213/src/main/scala/ce/injection/samples/mainapp/MainAppInjection.scala)
