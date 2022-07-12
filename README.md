@@ -7,7 +7,7 @@ http://127.0.0.1:8080/list
 ```
 
 In Scala 2 we use [ThoughtWorksInc/dsl-domains-cats](https://github.com/ThoughtWorksInc/dsl-domains-cats) to handle many Resources in cats-effect.
-And we use scala implicit to implement some injection like macwire's wire[T].
+And we use scala implicit syntax to implement some injection like macwire's wire[T].
 At least we use zio.ZEnvironment to create a module and use cats.Id to fix a type issue only in Scala 2.
 
 [Link to the main file](./modules/scala213/src/main/scala/ce/injection/samples/mainapp/MainAppInjection.scala)
