@@ -19,7 +19,7 @@ sbt>run2
 sbt>stop2
 ```
 
-In Scala 3.1 we use [typelevel/cats-effect-cps](https://github.com/typelevel/cats-effect-cps) to replace `dsl-domains-cats` since `dsl-domains-cats` only support Scala2.
+In Scala 3.1 we use [typelevel/cats-effect-cps](https://github.com/typelevel/cats-effect-cps) to replace `dsl-domains-cats` since `dsl-domains-cats` only support Scala 2.
 We alse zio.ZEnvironment to create a module. And the usage of given is more simple.
 
 [Link to the main file](./modules/scala31/src/main/scala/ce/injection/samples/mainapp/MainAppInjection.scala)
