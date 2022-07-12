@@ -8,9 +8,9 @@ import cats.data._
 import cats.effect._
 import cats.implicits._
 
-import model.Cat
+import model.{Cat, Conf}
 
-class ListPetsServices(xa: Transactor[IO]) {
+class ListPetsServices(xa: Transactor[IO], conf: Conf) {
 
   val y = xa.yolo
   import y._
@@ -21,4 +21,4 @@ class ListPetsServices(xa: Transactor[IO]) {
 
 }
 
-class ListPetsServicesImpl(implicit xa: Id[Transactor[IO]]) extends ListPetsServices(implicitly)
+class ListPetsServicesImpl(implicit xa: Id[Transactor[IO]], conf: Id[Conf]) extends ListPetsServices(implicitly, implicitly)

@@ -24,8 +24,8 @@ object MainAppInjection extends ZEnvHelper {
     val _projectConf: ProjectConf               = new ProjectConfImpl
     implicit val _conf: Conf                    = !Resource.eval(_projectConf.configIO)
     implicit val _initData: InitData            = new InitDataImpl
-    val _initDBImpl: InitDB                     = new InitDBImpl
-    val _execResult: Seq[Int]                   = !Resource.eval(_initDBImpl.execInitDataAction)
+    val _initDB: InitDB                         = new InitDBImpl
+    val _execResult: Seq[Int]                   = !Resource.eval(_initDB.execInitDataAction)
     val env                                     = ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
     env
   }: @reset

@@ -2,11 +2,11 @@ package ce.injection.samples
 package mainapp
 
 import doobie.*
-import cats.implicits.*
+import cats.implicits.given
 import cats.effect.*
 import cats.*
 import zio.{IO as _, *}
-import cats.effect.implicits.*
+import cats.effect.implicits.given
 import cats.effect.cps.*
 
 import model.Conf
@@ -17,29 +17,22 @@ object MainAppInjection:
 
   type Module1Sum = Transactor[IO] with Conf with InitData
 
-  val Module1Resources: Resource[IO, ZEnvironment[Module1Sum]] =
+  val Module1Resources: Resource[IO, ZEnvironment[Module1Sum]] = async[Resource[IO, *]] {
     val dbResourcesProvide: DBResourcesProvide = new DBResourcesProvideImpl
+    given Transactor[IO]                       = dbResourcesProvide.transactor.await
     val projectConf: ProjectConf               = new ProjectConfImpl
-    val a: Resource[IO, Conf]                  = Resource.eval(projectConf.configIO)
+    given Conf                                 = Resource.eval(projectConf.configIO).await
+    given InitData                             = new InitDataImpl
+    val initDB: InitDB                         = new InitDBImpl
+    val initResult: Seq[Int]                   = Resource.eval(initDB.execInitDataAction).await
+    ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
+  }
 
-    for
-      given Transactor[IO] <- dbResourcesProvide.transactor
-      c: Conf              <- a // Resource.eval(projectConf.configIO)
-      given Conf         = c
-      initData: InitData = new InitDataImpl
-      initDBImpl: InitDB = new InitDBImpl
-      a <- Resource.eval(initDBImpl.execInitDataAction)
-    yield
-      a: Seq[Int]
-      val env: ZEnvironment[Module1Sum] = ZEnvironment(implicitly[Transactor[IO]], c, initData)
-      env
-
-  val AppModule: Resource[IO, AppRoutes] =
-    for b <- Module1Resources
-    yield
-      given ZEnvironment[Module1Sum] = b
-      given ListPetsServices         = new ListPetsServicesImpl
-      new AppRoutesImpl
+  val AppModule: Resource[IO, AppRoutes] = async[Resource[IO, *]] {
+    given ZEnvironment[Module1Sum] = Module1Resources.await
+    given ListPetsServices         = new ListPetsServicesImpl
+    new AppRoutesImpl
+  }
 
 end MainAppInjection
 

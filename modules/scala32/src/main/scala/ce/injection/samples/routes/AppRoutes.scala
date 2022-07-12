@@ -1,29 +1,30 @@
 package ce.injection.samples
 package routes
 
-import cats._
-import cats.data._
-import cats.effect._
-import cats.implicits._
-import org.http4s._
-import org.http4s.dsl.io._
-import org.http4s.twirl._
+import cats.*
+import cats.data.*
+import cats.effect.*
+import cats.implicits.given
+import org.http4s.*
+import org.http4s.dsl.io.*
+import org.http4s.twirl.*
 
-import service.ListPetsServices
+import ce.injection.samples.service.ListPetsServices
 import views.html.ListPets
 import model.Conf
 
-class AppRoutes(listPetsServices: ListPetsServices, conf: Conf) {
+class AppRoutes(listPetsServices: ListPetsServices, conf: Conf):
 
-  def listCatsRoutes = HttpRoutes.of[IO] { case GET -> Root / "list" =>
-    for {
-      cats   <- listPetsServices.listCats
-      result <- Ok(ListPets(cats)(conf))
-    } yield result
-  }
+  def listCatsRoutes = HttpRoutes.of[IO](_.match
+    case GET -> Root / "list" =>
+      for
+        cats   <- listPetsServices.listCats
+        result <- Ok(ListPets(cats)(conf))
+      yield result
+  )
 
   val routes: HttpRoutes[IO] = listCatsRoutes
 
-}
+end AppRoutes
 
-class AppRoutesImpl(implicit listPetsServices: Id[ListPetsServices], conf: Id[Conf]) extends AppRoutes(implicitly, implicitly)
+class AppRoutesImpl(using ListPetsServices, Conf) extends AppRoutes(summon, summon)

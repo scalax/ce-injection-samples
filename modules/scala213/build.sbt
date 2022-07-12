@@ -6,7 +6,6 @@ libraryDependencies ++= Dependencies.doobie
 libraryDependencies ++= Dependencies.h2
 libraryDependencies ++= Dependencies.zio2
 libraryDependencies ++= Dependencies.simpleLogger
-libraryDependencies ++= Dependencies.macwire
 libraryDependencies ++= Dependencies.domainsCats
 
 addCompilerPlugin(Dependencies.kindProjector)

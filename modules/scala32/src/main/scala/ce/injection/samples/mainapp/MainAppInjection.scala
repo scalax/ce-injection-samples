@@ -1,43 +1,39 @@
 package ce.injection.samples
 package mainapp
 
-import doobie._
-import cats._
-import cats.implicits._
-import cats.effect._
-import zio.ZEnvironment
-import service.{ListPetsServices, ListPetsServicesImpl}
-import routes.{AppRoutes, AppRoutesImpl}
+import doobie.*
+import cats.implicits.given
+import cats.effect.*
+import cats.*
+import zio.{IO as _, *}
+import cats.effect.implicits.given
+
 import model.Conf
+import routes.{AppRoutes, AppRoutesImpl}
+import service.{ListPetsServices, ListPetsServicesImpl}
 
-import com.thoughtworks.dsl.keywords.Monadic._
-import com.thoughtworks.dsl.domains.cats._
-import com.thoughtworks.dsl.Dsl.reset
-
-object MainAppInjection extends ZEnvHelper {
+object MainAppInjection:
 
   type Module1Sum = Transactor[IO] with Conf with InitData
 
-  val Module1Resources: Resource[IO, ZEnvironment[Module1Sum]] = Resource.pure {
-    val _dbResourcesProvide: DBResourcesProvide = new DBResourcesProvideImpl
-    implicit val _dbResources: Transactor[IO]   = !_dbResourcesProvide.transactor
-    val _projectConf: ProjectConf               = new ProjectConfImpl
-    implicit val _conf: Conf                    = !Resource.eval(_projectConf.configIO)
-    implicit val _initData: InitData            = new InitDataImpl
-    val _initDBImpl: InitDB                     = new InitDBImpl
-    val _execResult: Seq[Int]                   = !Resource.eval(_initDBImpl.execInitDataAction)
-    val env                                     = ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
-    env
-  }: @reset
+  val Module1Resources: Resource[IO, ZEnvironment[Module1Sum]] =
+    val dbResourcesProvide: DBResourcesProvide = new DBResourcesProvideImpl
 
-  val AppModule: Resource[IO, AppRoutes] = Resource.pure {
-    implicit val module1: ZEnvironment[Module1Sum]   = !Module1Resources
-    implicit val _listPetsServices: ListPetsServices = new ListPetsServicesImpl
-    new AppRoutesImpl
-  }: @reset
+    for
+      given Transactor[IO] <- dbResourcesProvide.transactor
+      projectConf: ProjectConf = new ProjectConfImpl
+      given Conf <- Resource.eval(projectConf.configIO)
+      given InitData = new InitDataImpl
+      initDB: InitDB = new InitDBImpl
+      _: Seq[Int] <- Resource.eval(initDB.execInitDataAction)
+    yield ZEnvironment(implicitly[Transactor[IO]], implicitly[Conf], implicitly[InitData])
 
-}
+  val AppModule: Resource[IO, AppRoutes] =
+    for given ZEnvironment[Module1Sum] <- Module1Resources
+    yield
+      given ListPetsServices = new ListPetsServicesImpl
+      new AppRoutesImpl
 
-trait ZEnvHelper {
-  implicit def fetchModelFromZEnv[T](implicit env: zio.ZEnvironment[T], tag: zio.Tag[T]): Id[T] = env.get(tag)
-}
+end MainAppInjection
+
+given [ModelTag: Tag](using ZEnvironment[ModelTag]): ModelTag = summon[ZEnvironment[ModelTag]].get

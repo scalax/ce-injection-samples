@@ -3,19 +3,19 @@ package mainapp
 
 import model.Cat
 
-import doobie._
-import doobie.implicits._
+import doobie.*
+import doobie.implicits.given
 import doobie.util.ExecutionContexts
-import cats._
-import cats.data._
-import cats.effect._
-import cats.implicits._
+import cats.*
+import cats.data.*
+import cats.effect.*
+import cats.implicits.given
 import doobie.hikari.HikariTransactor
 import scala.concurrent.ExecutionContext
 
-class DBResourcesProvide {
+class DBResourcesProvide:
 
-  val transactor: Resource[IO, HikariTransactor[IO]] = {
+  val transactor: Resource[IO, HikariTransactor[IO]] =
     def toTransactor(ce: ExecutionContext) = HikariTransactor.newHikariTransactor[IO](
       driverClassName = "org.h2.Driver", // driver classname
       url = "jdbc:h2:./h2database",      // connect URL
@@ -24,20 +24,19 @@ class DBResourcesProvide {
       ce                                 // await connection here
     )
 
-    for {
+    for
       ce <- ExecutionContexts.fixedThreadPool[IO](32)
       xa <- toTransactor(ce)
-    } yield xa
-  }
+    yield xa
 
-}
+end DBResourcesProvide
 
 class DBResourcesProvideImpl extends DBResourcesProvide
 
-class InitDB(xa: Transactor[IO], initData: InitData) {
+class InitDB(xa: Transactor[IO], initData: InitData):
 
   val y = xa.yolo
-  import y._
+  import y.*
 
   private val dropTable = sql"""
       DROP TABLE IF EXISTS cat
@@ -57,6 +56,6 @@ class InitDB(xa: Transactor[IO], initData: InitData) {
 
   val execInitDataAction: IO[Seq[Int]] = initDatabase *> initDataAction
 
-}
+end InitDB
 
-class InitDBImpl(implicit xaProvide: Id[Transactor[IO]], initData: Id[InitData]) extends InitDB(implicitly, implicitly)
+class InitDBImpl(using Transactor[IO], InitData) extends InitDB(summon, summon)

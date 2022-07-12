@@ -7,7 +7,7 @@ import cats.effect.*
 import cats.implicits.given
 import org.http4s.*
 import org.http4s.dsl.io.*
-import com.comcast.ip4s.*
+import com.comcast.ip4s.{ipv4, port}
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.implicits.given
 
