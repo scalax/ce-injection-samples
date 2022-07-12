@@ -31,7 +31,8 @@ sbt>stop31
 ```
 
 In Scala 3.2 we just use for comprehensions embbed by given. This shows the powerful syntax of scala.
-zio.ZEnvironment is still used for moduling.
+zio.ZEnvironment is still used for moduling.  
+Anyway you can use the sample above like Scala 3.1.
 
 [Link to the main file](./modules/scala32/src/main/scala/ce/injection/samples/mainapp/MainAppInjection.scala)
 
