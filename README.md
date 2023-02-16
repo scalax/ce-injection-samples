@@ -19,8 +19,8 @@ sbt>run2
 sbt>stop2
 ```
 
-In Scala 3.1 we use [typelevel/cats-effect-cps](https://github.com/typelevel/cats-effect-cps) to replace `dsl-domains-cats` since `dsl-domains-cats` only support Scala2.
-We alse zio.ZEnvironment to create a module. And the usage of given is more simple.
+In Scala 3.1 we use [typelevel/cats-effect-cps](https://github.com/typelevel/cats-effect-cps) to replace `dsl-domains-cats` since `dsl-domains-cats` only support Scala 2.
+We also use zio.ZEnvironment to create a module. And the usage of given is more simple.
 
 [Link to the main file](./modules/scala31/src/main/scala/ce/injection/samples/mainapp/MainAppInjection.scala)
 
@@ -31,7 +31,8 @@ sbt>stop31
 ```
 
 In Scala 3.2 we just use for comprehensions embbed by given. This shows the powerful syntax of scala.
-zio.ZEnvironment is still used for moduling.
+zio.ZEnvironment is still used for moduling.  
+Anyway you can use the sample above like Scala 3.1.
 
 [Link to the main file](./modules/scala32/src/main/scala/ce/injection/samples/mainapp/MainAppInjection.scala)
 
